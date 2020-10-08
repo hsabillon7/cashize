@@ -1,0 +1,35 @@
+{
+  "name": "cashize",
+  "version": "1.0.0",
+  "description": "Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsabillon7/cashize.git"
+  },
+  "keywords": [
+    "node",
+    "handlebars",
+    "mongoose",
+    "bootstrap",
+    "MVC"
+  ],
+  "author": "Héctor Sabillón",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsabillon7/cachize/issues"
+  },
+  "homepage": "https://github.com/hsabillon7/cachize#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.1.0",
+    "mongoose": "^5.10.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
