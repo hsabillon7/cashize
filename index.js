@@ -1,5 +1,6 @@
 // Importar los módulos requeridos para el funcionamiento del servidor
 const express = require("express");
+require("./config/db");
 const exphbs = require("express-handlebars");
 const router = require("./routes/index");
 
