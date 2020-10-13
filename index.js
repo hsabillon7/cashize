@@ -10,6 +10,11 @@ require("dotenv").config({ path: ".env" });
 // Crear un servidor utilizando express
 const app = express();
 
+// Habilitar Handlebars como nuestro template engine
+app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
+
+app.set("view engine", "hbs");
+
 // Implementar nuestro router
 app.use("/", router());
 
