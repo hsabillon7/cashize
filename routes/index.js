@@ -11,7 +11,10 @@ module.exports = () => {
     res.send("¡Bienvenido a Cashize!");
   });
 
+  // Rutas para usuario
   router.get("/crear-cuenta", usuarioController.formularioCrearCuenta);
+
+  router.post("/registrarse", usuarioController.crearCuenta);
 
   return router;
 };
