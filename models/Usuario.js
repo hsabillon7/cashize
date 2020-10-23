@@ -57,18 +57,26 @@ usuarioSchema.pre("save", function (next) {
   });
 });
 // Hooks activar el usuario y almacenar la fecha de registro
-usuarioSchema.pre("save", function (err, doc, next) {
-  // TODO: Revisar la inserción para el hook
+usuarioSchema.pre("save", function (next) {
   const user = this;
 
-  if (err) return next(err);
-  else {
-    user.activo = true;
-    user.fechaRegistro = Date.now();
-    user.save();
-  }
+  // Datos adicionales para el usuario
+  user.activo = true;
+  user.fechaRegistro = Date.now();
 
   next();
+});
+
+// Hooks para acceder a los errores de MongoDB (unique key)
+usuarioSchema.post("save", function (err, doc, next) {
+  // Verificar si ocurrió un error al momento de almacenar
+  if (err.name === "MongoError" && err.code === 11000) {
+    next(
+      "¡Ya existe un usuario con la dirección de correo electrónico ingresada!"
+    );
+  } else {
+    next(err);
+  }
 });
 
 // Realizar un método que automáticamente verifique si el password candidato
