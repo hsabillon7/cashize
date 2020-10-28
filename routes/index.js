@@ -17,7 +17,7 @@ module.exports = () => {
   router.get("/crear-cuenta", usuarioController.formularioCrearCuenta);
 
   router.post(
-    "/registrarse",
+    "/crear-cuenta",
     [
       // Realizar una verificación de los atributos del formulario
       // https://express-validator.github.io/docs/index.html
@@ -37,6 +37,10 @@ module.exports = () => {
   router.get("/iniciar-sesion", usuarioController.formularioIniciarSesion);
 
   router.post("/iniciar-sesion", authController.autenticarUsuario);
+
+  router.get("/olvide-password", authController.formularioRestablecerPassword);
+
+  router.post("/olvide-password", authController.enviarToken);
 
   // Rutas de administración
   router.get("/administrar", (req, res, next) => {
