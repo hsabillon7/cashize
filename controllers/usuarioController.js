@@ -20,19 +20,21 @@ exports.formularioCrearCuenta = (req, res, next) => {
 exports.crearCuenta = async (req, res, next) => {
   // Verificar que no existan errores de validación
   const errores = validationResult(req);
-  const erroresArray = [];
-
-  console.log(errores);
+  const messages = { messages: [] };
+  // Obtener las variables desde el cuerpo de la petición
+  const { nombre, email, password } = req.body;
 
   // Si hay errores
   if (!errores.isEmpty()) {
     // Utilizar la función map para navegar dentro de un arreglo
-    errores.array().map((error) => erroresArray.push(error.msg));
-
-    console.log(erroresArray);
+    errores
+      .array()
+      .map((error) =>
+        messages.messages.push({ message: error.msg, alertType: "danger" })
+      );
 
     // Agregar los errores a nuestro mensajes flash
-    req.flash("error", erroresArray);
+    req.flash("error", messages);
 
     res.render("registrarse", {
       layout: "auth",
@@ -40,28 +42,36 @@ exports.crearCuenta = async (req, res, next) => {
       signButtonValue: "/iniciar-sesion",
       signButtonText: "Iniciar sesión",
       year,
-      messages: req.flash(),
+      messages,
+      // TODO: Mostrar todo el valor del dato en el formulario
+      nombre,
+      email,
+      password,
     });
+  } else {
+    // Intentar almacenar los datos del usuario
+    try {
+      // Crear el usuario
+      // https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise
+      // https://developer.mozilla.org/es/docs/Learn/JavaScript/Asynchronous/Async_await
+      await Usuario.create({
+        email,
+        password,
+        nombre,
+      });
+
+      // Mostrar un mensaje
+      messages.messages.push({
+        message: "!Usuario creado satisfactoriamente!",
+        alertType: "success",
+      });
+      req.flash("error", messages);
+
+      res.redirect("/iniciar-sesion");
+    } catch (error) {
+      console.log(error);
+    }
   }
-
-  // Obtener las variables desde el cuerpo de la petición
-  // const { nombre, email, password } = req.body;
-
-  // // Intentar almacenar los datos del usuario
-  // try {
-  //   // Crear el usuario
-  //   // https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promise
-  //   // https://developer.mozilla.org/es/docs/Learn/JavaScript/Asynchronous/Async_await
-  //   await Usuario.create({
-  //     email,
-  //     password,
-  //     nombre,
-  //   });
-
-  //   // Mostrar un mensaje
-  // } catch (error) {
-  //   console.log(error);
-  // }
 };
 
 // Cargar el formulario de inicio de sesión
@@ -72,5 +82,6 @@ exports.formularioIniciarSesion = (req, res, next) => {
     signButtonValue: "/crear-cuenta",
     signButtonText: "Regístrate",
     year,
+    messages: req.flash(),
   });
 };
