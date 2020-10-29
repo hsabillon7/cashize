@@ -8,6 +8,7 @@ const util = require("util");
 const transport = nodemailer.createTransport({
   host: emailConfig.host,
   port: emailConfig.port,
+  secure: false,
   auth: {
     user: emailConfig.user,
     pass: emailConfig.pass,
@@ -33,15 +34,16 @@ transport.use(
 exports.enviarCorreo = async (opciones) => {
   const opcionesCorreo = {
     from: " Cashize <hola@cashize.com>",
-    to: opciones.destinatario,
+    to: opciones.to,
     subject: opciones.subject,
     template: opciones.template,
     context: {
       resetUrl: opciones.resetUrl,
+      nombre: opciones.nombre,
     },
   };
-};
 
-// Enviar el correo mediante una promesa
-const sendMail = util.promisify(transport.sendMail, transport);
-return sendMail.call(transport, opcionesCorreo);
+  // Enviar el correo mediante una promesa
+  const sendMail = util.promisify(transport.sendMail, transport);
+  return sendMail.call(transport, opcionesCorreo);
+};
