@@ -20,7 +20,7 @@ exports.formularioCrearCuenta = (req, res, next) => {
 exports.crearCuenta = async (req, res, next) => {
   // Verificar que no existan errores de validación
   const errores = validationResult(req);
-  const messages = { messages: [] };
+  const messages = [];
   // Obtener las variables desde el cuerpo de la petición
   const { nombre, email, password } = req.body;
 
@@ -30,24 +30,13 @@ exports.crearCuenta = async (req, res, next) => {
     errores
       .array()
       .map((error) =>
-        messages.messages.push({ message: error.msg, alertType: "danger" })
+        messages.push({ message: error.msg, alertType: "danger" })
       );
 
     // Agregar los errores a nuestro mensajes flash
-    req.flash("error", messages);
+    req.flash("messages", messages);
 
-    res.render("registrarse", {
-      layout: "auth",
-      typePage: "register-page",
-      signButtonValue: "/iniciar-sesion",
-      signButtonText: "Iniciar sesión",
-      year,
-      messages,
-      // TODO: Mostrar todo el valor del dato en el formulario
-      nombre,
-      email,
-      password,
-    });
+    res.redirect("/crear-cuenta");
   } else {
     // Intentar almacenar los datos del usuario
     try {
