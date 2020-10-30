@@ -42,6 +42,10 @@ module.exports = () => {
 
   router.post("/olvide-password", authController.enviarToken);
 
+  router.get("/olvide-password/:token", authController.formularioNuevoPassword);
+
+  router.post("/olvide-password/:token", authController.almacenarNuevaPassword);
+
   // Rutas de administración
   router.get("/administrar", (req, res, next) => {
     res.send("Administración del sitio");
