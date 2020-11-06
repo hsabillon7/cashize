@@ -50,27 +50,32 @@ exports.crearCuenta = async (req, res, next) => {
       });
 
       // Mostrar un mensaje
-      messages.messages.push({
+      messages.push({
         message: "!Usuario creado satisfactoriamente!",
         alertType: "success",
       });
-      req.flash("error", messages);
+      req.flash("messages", messages);
 
       res.redirect("/iniciar-sesion");
     } catch (error) {
-      console.log(error);
+      messages.push({
+        message: error,
+        alertType: "danger",
+      });
+      req.flash("messages", messages);
+      res.redirect("/crear-cuenta");
     }
   }
 };
 
 // Cargar el formulario de inicio de sesión
 exports.formularioIniciarSesion = (req, res, next) => {
+  console.log(req.flash());
   res.render("iniciarSesion", {
     layout: "auth",
     typePage: "login-page",
     signButtonValue: "/crear-cuenta",
     signButtonText: "Regístrate",
     year,
-    messages: req.flash(),
   });
 };
