@@ -2,6 +2,7 @@
 const express = require("express");
 const usuarioController = require("../controllers/usuarioController");
 const authController = require("../controllers/authController");
+const productoController = require("../controllers/productoController");
 const { check } = require("express-validator");
 
 // Configura y mantiene todos los endpoints en el servidor
@@ -10,7 +11,7 @@ const router = express.Router();
 module.exports = () => {
   // Rutas disponibles
   router.get("/", (req, res, next) => {
-    res.send("¡Bienvenido a Cashize!");
+    res.render("buscar");
   });
 
   // Rutas para usuario
@@ -50,6 +51,38 @@ module.exports = () => {
   router.get("/administrar", (req, res, next) => {
     res.send("Administración del sitio");
   });
+
+  // Rutas para productos
+  router.get(
+    "/crear-producto",
+    authController.verificarInicioSesion,
+    productoController.formularioCrearProducto
+  );
+
+  router.post(
+    "/crear-producto",
+    authController.verificarInicioSesion,
+    [
+      check("nombre", "Debes ingresar el nombre del producto")
+        .not()
+        .isEmpty()
+        .escape(),
+      check("descripcion", "Debes ingresar la descripción del producto")
+        .not()
+        .isEmpty()
+        .escape(),
+      check("precio", "Debes ingresar el precio del producto")
+        .not()
+        .isEmpty()
+        .escape(),
+      check("precio", "Valor incorrecto en el precio del producto").isNumeric(),
+      check("imagen", "Debes seleccionar una imagen para el producto")
+        .not()
+        .isEmpty(),
+    ],
+    productoController.subirImagen,
+    productoController.crearProducto
+  );
 
   return router;
 };
