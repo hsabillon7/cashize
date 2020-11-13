@@ -117,3 +117,6 @@ dist
 
 # Hoja de estilos personalizada
 public/css/custom-styles.min.css
+
+# JS personalizados
+public/js/
