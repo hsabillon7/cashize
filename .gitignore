@@ -120,3 +120,6 @@ public/css/custom-styles.min.css
 
 # JS personalizados
 public/js/
+
+# Imágenes subidas por los usuarios
+public/uploads
