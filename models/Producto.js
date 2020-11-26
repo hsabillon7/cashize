@@ -1,6 +1,7 @@
 // Importar los módulos requeridos
 const mongoose = require("mongoose");
 const shortid = require("shortid");
+const slug = require("slug");
 
 // Definición del schema
 const productoSchema = new mongoose.Schema({
@@ -27,12 +28,12 @@ const productoSchema = new mongoose.Schema({
   etiquetas: String,
   vendedor: {
     type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
+    ref: "Usuarios",
     required: true,
   },
   comprador: {
     type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
+    ref: "Usuarios",
   },
   fechaVenta: Date,
   estado: String,
@@ -43,6 +44,9 @@ productoSchema.pre("save", function (next) {
   // Crear la URL
   const url = slug(this.nombre);
   this.url = `${url}-${shortid.generate()}`;
+
+  // Almacenar la fecha de creación del producto
+  this.fechaCreacion = Date.now();
 
   next();
 });
