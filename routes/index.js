@@ -3,6 +3,7 @@ const express = require("express");
 const usuarioController = require("../controllers/usuarioController");
 const authController = require("../controllers/authController");
 const productoController = require("../controllers/productoController");
+const homeController = require("../controllers/homeController");
 const { check } = require("express-validator");
 
 // Configura y mantiene todos los endpoints en el servidor
@@ -10,9 +11,7 @@ const router = express.Router();
 
 module.exports = () => {
   // Rutas disponibles
-  router.get("/", (req, res, next) => {
-    res.render("buscar");
-  });
+  router.get("/", homeController.mostrarProductos);
 
   // Rutas para usuario
   router.get("/crear-cuenta", usuarioController.formularioCrearCuenta);
@@ -62,6 +61,12 @@ module.exports = () => {
   router.post(
     "/crear-producto",
     authController.verificarInicioSesion,
+    // [
+    //   check("imagen", "Debes seleccionar una imagen para el producto")
+    //     .not()
+    //     .isEmpty(),
+    // ],
+    productoController.subirImagen,
     [
       check("nombre", "Debes ingresar el nombre del producto")
         .not()
@@ -76,12 +81,16 @@ module.exports = () => {
         .isEmpty()
         .escape(),
       check("precio", "Valor incorrecto en el precio del producto").isNumeric(),
-      check("imagen", "Debes seleccionar una imagen para el producto")
-        .not()
-        .isEmpty(),
     ],
-    productoController.subirImagen,
     productoController.crearProducto
+  );
+
+  router.get("/producto/:url", productoController.verProducto);
+
+  router.get(
+    "/carrito/:url",
+    authController.verificarInicioSesion,
+    productoController.agregarProductoCarrito
   );
 
   return router;
