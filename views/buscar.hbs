@@ -2,6 +2,8 @@
   <div class="main">
     <div class="section section-white section-search">
       <div class="container">
+        {{!-- Mensajes para el usuario --}}
+        {{> showMessages messages}}
         <div class="row">
           <div class="col-md-8 col-12 ml-auto mr-auto text-center">
             <form role="search" class="form-inline search-form">
@@ -13,6 +15,19 @@
               </div>
             </form>
             <h6 class="text-muted">¿Es esto lo que búscas?</h6>
+            <div class="row add-row">
+              {{#each productos as |producto|}}
+              <div class="col-md-4 col-sm-4">
+                <h5>{{producto.nombre}}</h5>
+                <p class="price"><strong>L {{producto.precio}}</strong></p>
+                <p>{{producto.descripcion}}</p>
+                {{!-- <div class="col-md-3 ml-auto col-sm-4"> --}}
+                <img src="uploads/products/{{imagen}}" class="img-responsive" />
+                {{!-- </div> --}}
+                <a href="/producto/{{producto.url}}" class="btn btn-secondary btn-round">Ver más</a>
+              </div>
+              {{/each}}
+            </div>
             <div class="text-missing">
               <h5 class="text-muted">Si no encuentras lo que buscas, puedes cambiar el término de búsqueda. </h5>
             </div>
