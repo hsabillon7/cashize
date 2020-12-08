@@ -93,5 +93,17 @@ module.exports = () => {
     productoController.agregarProductoCarrito
   );
 
+  router.get(
+    "/productos-usuario",
+    authController.verificarInicioSesion,
+    productoController.mostrarProductosUsuario
+  );
+
+  router.delete(
+    "/producto/:id",
+    authController.verificarInicioSesion,
+    productoController.eliminarProducto
+  );
+
   return router;
 };
