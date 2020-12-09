@@ -119,7 +119,8 @@ dist
 public/css/custom-styles.min.css
 
 # JS personalizados
-public/js/
+public/js/bootstrap-tagsinput.js
+public/js/jasny-bootstrap.min.js
 
 # Imágenes subidas por los usuarios
 public/uploads
