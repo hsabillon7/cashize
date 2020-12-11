@@ -58,4 +58,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Implementar nuestro router
 app.use("/", router());
 
-app.listen(process.env.PORT);
+// Permitir que Heroku nos asigne un puerto disponible
+const host = "0.0.0.0";
+const port = process.env.PORT;
+
+app.listen(port, host, () => {
+  console.log(`Servidor ejecutándose en el puerto ${port}`);
+});
